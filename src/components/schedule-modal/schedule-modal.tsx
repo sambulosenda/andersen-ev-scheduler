@@ -1,10 +1,8 @@
-// src/components/ScheduleModal.tsx
 import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
   Modal,
-  StyleSheet,
   TouchableOpacity,
   TextInput,
   ScrollView,

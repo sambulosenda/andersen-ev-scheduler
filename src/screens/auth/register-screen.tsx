@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,9 +9,9 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  Alert,
 } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
+import { useForm, Controller } from 'react-hook-form';
 
 import { useAuthStore } from '../../store/authStore';
 import { COLORS } from '../../constants/colors';
@@ -24,13 +24,27 @@ type RootStackParamList = {
 
 type Props = StackScreenProps<RootStackParamList, 'Register'>;
 
+type FormData = {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
 const RegisterScreen: React.FC<Props> = ({ navigation }) => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  
   const { register, loading, error, clearError } = useAuthStore();
+  
+  const { control, handleSubmit, formState: { errors }, watch } = useForm<FormData>({
+    defaultValues: {
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    }
+  });
+
+  // Used to validate confirmPassword against password
+  const password = watch('password');
 
   // Clear errors when component mounts or unmounts
   useEffect(() => {
@@ -38,24 +52,8 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
     return () => clearError();
   }, []);
 
-  const handleRegister = async () => {
-    // Validate inputs
-    if (!username.trim() || !password.trim() || !confirmPassword.trim()) {
-      Alert.alert('Error', 'Please fill all required fields');
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
-      return;
-    }
-
-    if (password.length < 6) {
-      Alert.alert('Error', 'Password must be at least 6 characters');
-      return;
-    }
-
-    await register(username, password, email || undefined);
+  const onSubmit = async (data: FormData) => {
+    await register(data.username, data.password, data.email || undefined);
   };
 
   return (
@@ -71,56 +69,120 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
           
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Username <Text style={styles.required}>*</Text></Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter username"
-              value={username}
-              onChangeText={setUsername}
-              autoCapitalize="none"
-              accessibilityLabel="Username input"
+            <Controller
+              control={control}
+              rules={{
+                required: 'Username is required',
+                minLength: {
+                  value: 3,
+                  message: 'Username must be at least 3 characters',
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={[styles.input, errors.username && styles.inputError]}
+                  placeholder="Enter username"
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  autoCapitalize="none"
+                  accessibilityLabel="Username input"
+                />
+              )}
+              name="username"
             />
+            {errors.username && (
+              <Text style={styles.errorMessage}>{errors.username.message}</Text>
+            )}
           </View>
           
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter email"
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              accessibilityLabel="Email input"
+            <Controller
+              control={control}
+              rules={{
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: 'Invalid email address',
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={[styles.input, errors.email && styles.inputError]}
+                  placeholder="Enter email"
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  accessibilityLabel="Email input"
+                />
+              )}
+              name="email"
             />
+            {errors.email && (
+              <Text style={styles.errorMessage}>{errors.email.message}</Text>
+            )}
           </View>
           
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Password <Text style={styles.required}>*</Text></Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter password"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              accessibilityLabel="Password input"
+            <Controller
+              control={control}
+              rules={{
+                required: 'Password is required',
+                minLength: {
+                  value: 6,
+                  message: 'Password must be at least 6 characters',
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={[styles.input, errors.password && styles.inputError]}
+                  placeholder="Enter password"
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  secureTextEntry
+                  accessibilityLabel="Password input"
+                />
+              )}
+              name="password"
             />
+            {errors.password && (
+              <Text style={styles.errorMessage}>{errors.password.message}</Text>
+            )}
           </View>
           
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Confirm Password <Text style={styles.required}>*</Text></Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Confirm password"
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-              secureTextEntry
-              accessibilityLabel="Confirm password input"
+            <Controller
+              control={control}
+              rules={{
+                required: 'Please confirm your password',
+                validate: value => value === password || 'Passwords do not match',
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={[styles.input, errors.confirmPassword && styles.inputError]}
+                  placeholder="Confirm password"
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  secureTextEntry
+                  accessibilityLabel="Confirm password input"
+                />
+              )}
+              name="confirmPassword"
             />
+            {errors.confirmPassword && (
+              <Text style={styles.errorMessage}>{errors.confirmPassword.message}</Text>
+            )}
           </View>
           
           <TouchableOpacity
             style={styles.button}
-            onPress={handleRegister}
+            onPress={handleSubmit(onSubmit)}
             disabled={loading}
             accessibilityLabel="Register button"
             accessibilityRole="button"
@@ -188,6 +250,16 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 12,
     fontSize: 16,
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  inputError: {
+    borderColor: COLORS.error,
+  },
+  errorMessage: {
+    color: COLORS.error,
+    fontSize: 12,
+    marginTop: 4,
   },
   button: {
     backgroundColor: COLORS.primary,
@@ -211,7 +283,7 @@ const styles = StyleSheet.create({
   },
   loginTextBold: {
     fontWeight: '600',
-    color: COLORS.secondary,
+    color: COLORS.primary,
   },
 });
 

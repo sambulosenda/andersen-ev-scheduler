@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: COLORS.lightGrey,
-    borderRadius: 5,
+    borderRadius: 40,
     padding: 12,
     marginHorizontal: 4,
   },
@@ -96,7 +96,7 @@ export const styles = StyleSheet.create({
   },
   button: {
     padding: 12,
-    borderRadius: 5,
+    borderRadius: 40,
     alignItems: 'center',
     flex: 1,
     marginHorizontal: 4,
