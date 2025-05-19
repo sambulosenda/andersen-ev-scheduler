@@ -13,11 +13,11 @@ interface User {
 }
 
 interface Schedule {
-  id?: number; // Optional for creation
+  id?: number; 
   user_id: number;
   name: string;
-  schedule_type: string; // Consider enum for valid types
-  days: string; // Changed from string[] to string to match database storage
+  schedule_type: string;
+  days: string;
   start_time?: string | null;
   end_time?: string | null;
   ready_by_time?: string | null;

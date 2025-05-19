@@ -1,13 +1,21 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import { Image } from "react-native";
 
-import { useAuthStore } from '../store/authStore';
-import LoginScreen from '../screens/auth/LoginScreen';
-import RegisterScreen from '../screens/auth/RegisterScreen';
-import MainTabs from './MainTabs';
-import { COLORS } from '../constants/colors';
+import { useAuthStore } from "../store/authStore";
+import LoginScreen from "../screens/auth/login-screen";
+import RegisterScreen from "../screens/auth/register-screen";
+import MainTabs from "./MainTabs";
+import { COLORS } from "../constants/colors";
 
 const Stack = createStackNavigator();
+
+const LogoTitle = () => (
+  <Image
+    source={require("../assets/andersen-logo.png")}
+    style={{ width: 100, height: 24, resizeMode: "contain" }}
+  />
+);
 
 const RootNavigator = () => {
   const { user } = useAuthStore();
@@ -16,11 +24,11 @@ const RootNavigator = () => {
     <Stack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: COLORS.primary,
+          backgroundColor: COLORS.background,
         },
-        headerTintColor: COLORS.white,
+        headerTintColor: COLORS.text,
         headerTitleStyle: {
-          fontWeight: 'bold',
+          fontWeight: "bold",
         },
       }}
     >
@@ -34,20 +42,20 @@ const RootNavigator = () => {
       ) : (
         // User is not logged in
         <>
-          <Stack.Screen 
-            name="Login" 
-            component={LoginScreen} 
-            options={{ 
-              title: 'Andersen EV',
-              headerTitleAlign: 'center'
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{
+              headerTitle: () => <LogoTitle />,
+              headerTitleAlign: "center",
             }}
           />
-          <Stack.Screen 
-            name="Register" 
+          <Stack.Screen
+            name="Register"
             component={RegisterScreen}
-            options={{ 
-              title: 'Create Account',
-              headerTitleAlign: 'center'
+            options={{
+              headerTitle: () => <LogoTitle />,
+              headerTitleAlign: "center",
             }}
           />
         </>

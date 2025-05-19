@@ -50,13 +50,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.logoContainer}>
-          {/* Replace with actual Andersen logo */}
-          <View style={styles.logoPlaceholder}>
-            <Text style={styles.logoText}>ANDERSEN</Text>
-          </View>
-        </View>
-
+        
         <View style={styles.formContainer}>
           <Text style={styles.title}>Charging Schedule Manager</Text>
           
@@ -133,7 +127,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 8,
+    borderRadius: 4,
   },
   logoText: {
     color: COLORS.white,
@@ -142,17 +136,12 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     backgroundColor: COLORS.white,
-    borderRadius: 10,
+    borderRadius: 8,
     padding: 20,
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
   },
   title: {
-    fontSize: 22,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: '600',
     color: COLORS.primary,
     textAlign: 'center',
     marginBottom: 20,
@@ -172,13 +161,13 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: COLORS.lightGrey,
-    borderRadius: 5,
+    borderRadius: 4,
     padding: 12,
     fontSize: 16,
   },
   button: {
     backgroundColor: COLORS.primary,
-    borderRadius: 5,
+    borderRadius: 4,
     padding: 15,
     alignItems: 'center',
     marginTop: 10,
@@ -186,7 +175,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: COLORS.white,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600', 
   },
   registerLink: {
     marginTop: 20,
@@ -197,7 +186,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   registerTextBold: {
-    fontWeight: 'bold',
+    fontWeight: '600',
     color: COLORS.secondary,
   },
 });

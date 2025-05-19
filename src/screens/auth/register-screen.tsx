@@ -156,18 +156,13 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     backgroundColor: COLORS.white,
-    borderRadius: 10,
+    borderRadius: 8,
     padding: 20,
     marginTop: 20,
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
   },
   title: {
-    fontSize: 22,
-    fontWeight: 'bold',
+    fontSize: 20,
+    fontWeight: '600',
     color: COLORS.primary,
     textAlign: 'center',
     marginBottom: 20,
@@ -190,13 +185,13 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: COLORS.lightGrey,
-    borderRadius: 5,
+    borderRadius: 4,
     padding: 12,
     fontSize: 16,
   },
   button: {
     backgroundColor: COLORS.primary,
-    borderRadius: 5,
+    borderRadius: 4,
     padding: 15,
     alignItems: 'center',
     marginTop: 10,
@@ -204,7 +199,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: COLORS.white,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   loginLink: {
     marginTop: 20,
@@ -215,7 +210,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   loginTextBold: {
-    fontWeight: 'bold',
+    fontWeight: '600',
     color: COLORS.secondary,
   },
 });
