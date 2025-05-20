@@ -1,20 +1,29 @@
+import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
+import RootNavigator from './src/navigation/root-navigator';
+import { initDatabase } from './src/database/database';
+import { COLORS } from './src/constants/colors';
 
 export default function App() {
+  // Initialize database on app start
+  useEffect(() => {
+    initDatabase()
+      .then(() => console.log('Database initialized'))
+      .catch(error => console.error('Database initialization failed:', error));
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <RootNavigator />
+          <StatusBar style="light" backgroundColor={COLORS.primary} />
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

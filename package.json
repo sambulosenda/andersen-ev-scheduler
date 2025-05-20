@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/vector-icons": "^14.1.0",
     "@react-native-community/datetimepicker": "^8.3.0",
     "@react-navigation/bottom-tabs": "^7.3.13",
     "@react-navigation/native": "^7.1.9",
@@ -17,14 +18,27 @@
     "expo-sqlite": "^15.2.10",
     "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
+    "react-hook-form": "^7.56.4",
     "react-native": "0.79.2",
+    "react-native-gesture-handler": "^2.25.0",
     "react-native-safe-area-context": "^5.4.0",
-    "react-native-screens": "^4.10.0"
+    "react-native-screens": "^4.10.0",
+    "zustand": "^5.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@eslint/js": "^9.27.0",
     "@types/react": "~19.0.10",
-    "typescript": "~5.8.3"
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
+    "@typescript-eslint/parser": "^8.32.1",
+    "babel-plugin-module-resolver": "^5.0.2",
+    "eslint": "^9.27.0",
+    "eslint-config-prettier": "10.1.5",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^16.1.0",
+    "prettier": "3.5.3",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.32.1"
   },
   "private": true
 }
