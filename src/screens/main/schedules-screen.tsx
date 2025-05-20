@@ -10,11 +10,11 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-import { useScheduleStore } from "../../store/schedule-store";
-import { Schedule } from "../../types";
-import ScheduleItem from "../../components/schedule-item/schedule-item";
-import { COLORS } from "../../constants/colors";
-import { ScheduleModal } from "../../components/schedule-modal/schedule-modal";
+import { useScheduleStore } from "@/store/schedule-store";
+import { Schedule } from "@/types";
+import ScheduleItem from "@/components/schedule-item/schedule-item";
+import { COLORS } from "@/constants/colors";
+import { ScheduleModal } from "@/components/schedule-modal/schedule-modal";
 
 const SchedulesScreen = () => {
   const {
@@ -60,6 +60,7 @@ const SchedulesScreen = () => {
     setModalVisible(true);
   };
 
+  // If had some more time would make this its own seperate component and style it more as a modal. 
   const handleDeleteSchedule = (id: number) => {
     Alert.alert(
       "Delete Schedule",

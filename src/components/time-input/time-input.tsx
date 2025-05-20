@@ -7,8 +7,8 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
-import { COLORS } from '../../constants/colors';
 import { styles } from './time-input.styles';
+import { COLORS } from '@/constants/colors';
 
 interface TimeInputProps {
   value: string;

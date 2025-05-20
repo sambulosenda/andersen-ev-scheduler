@@ -9,12 +9,13 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-import { useAuthStore } from "../../store/auth-store";
-import { COLORS } from "../../constants/colors";
+import { useAuthStore } from "@/store/auth-store";
+import { COLORS } from "@/constants/colors";
 
 const ProfileScreen = () => {
   const { user, logout } = useAuthStore();
 
+  // If has more time I would make it onto a reusable compnent and style it a bit more
   const handleLogout = () => {
     Alert.alert("Logout", "Are you sure you want to logout?", [
       { text: "Cancel", style: "cancel" },

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 
-import { Day } from "../../types";
+import { Day } from "@/types";
 import { styles } from "./day-selector.styles";
 
 interface DaySelectorProps {
