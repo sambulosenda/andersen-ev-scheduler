@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
@@ -22,8 +21,6 @@ export const TimeInput: React.FC<TimeInputProps> = ({
   onChange,
   accessibilityLabel,
 }) => {
-  const [showPicker, setShowPicker] = useState(false);
-
   // Parse the time string to Date object
   const getTimeAsDate = (): Date => {
     const date = new Date();
@@ -34,6 +31,9 @@ export const TimeInput: React.FC<TimeInputProps> = ({
     }
     return date;
   };
+
+  const [showPicker, setShowPicker] = useState(false);
+  const [selectedTime, setSelectedTime] = useState<Date>(getTimeAsDate());
 
   // Format time as HH:MM
   const formatTime = (date: Date): string => {
@@ -46,8 +46,10 @@ export const TimeInput: React.FC<TimeInputProps> = ({
     event: DateTimePickerEvent,
     selectedDate?: Date
   ) => {
-    setShowPicker(Platform.OS === 'ios');
+    setShowPicker(false);  // Close picker for both iOS and Android
+    
     if (selectedDate) {
+      setSelectedTime(selectedDate);
       onChange(formatTime(selectedDate));
     }
   };
@@ -65,7 +67,7 @@ export const TimeInput: React.FC<TimeInputProps> = ({
 
       {showPicker && (
         <DateTimePicker
-          value={getTimeAsDate()}
+          value={selectedTime}
           mode="time"
           is24Hour={true}
           display="default"
