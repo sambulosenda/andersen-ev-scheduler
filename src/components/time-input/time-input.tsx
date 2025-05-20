@@ -6,7 +6,7 @@ import {
   Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
 import { COLORS } from '../../constants/colors';
 import { styles } from './time-input.styles';
@@ -42,7 +42,10 @@ export const TimeInput: React.FC<TimeInputProps> = ({
     return `${hours}:${minutes}`;
   };
 
-  const handleTimeChange = (event: any, selectedDate?: Date) => {
+  const handleTimeChange = (
+    event: DateTimePickerEvent,
+    selectedDate?: Date
+  ) => {
     setShowPicker(Platform.OS === 'ios');
     if (selectedDate) {
       onChange(formatTime(selectedDate));

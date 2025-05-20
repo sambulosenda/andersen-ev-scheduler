@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
@@ -6,28 +6,24 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-import { useAuthStore } from '../../store/auth-store';
-import { COLORS } from '../../constants/colors';
+import { useAuthStore } from "../../store/auth-store";
+import { COLORS } from "../../constants/colors";
 
 const ProfileScreen = () => {
   const { user, logout } = useAuthStore();
 
   const handleLogout = () => {
-    Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Logout',
-          onPress: logout,
-          style: 'destructive',
-        },
-      ]
-    );
+    Alert.alert("Logout", "Are you sure you want to logout?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Logout",
+        onPress: logout,
+        style: "destructive",
+      },
+    ]);
   };
 
   return (
@@ -46,38 +42,52 @@ const ProfileScreen = () => {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Settings</Text>
-        
+
         <TouchableOpacity style={styles.menuItem} activeOpacity={0.7}>
-          <Ionicons name="battery-charging-outline" size={24} color={COLORS.primary} />
+          <Ionicons
+            name="battery-charging-outline"
+            size={24}
+            color={COLORS.primary}
+          />
           <Text style={styles.menuItemText}>Charge Point Settings</Text>
           <Ionicons name="chevron-forward" size={20} color={COLORS.grey} />
         </TouchableOpacity>
-        
+
         <TouchableOpacity style={styles.menuItem} activeOpacity={0.7}>
-          <Ionicons name="notifications-outline" size={24} color={COLORS.primary} />
+          <Ionicons
+            name="notifications-outline"
+            size={24}
+            color={COLORS.primary}
+          />
           <Text style={styles.menuItemText}>Notification Preferences</Text>
           <Ionicons name="chevron-forward" size={20} color={COLORS.grey} />
         </TouchableOpacity>
-        
+
         <TouchableOpacity style={styles.menuItem} activeOpacity={0.7}>
           <Ionicons name="car-outline" size={24} color={COLORS.primary} />
           <Text style={styles.menuItemText}>Vehicle Information</Text>
           <Ionicons name="chevron-forward" size={20} color={COLORS.grey} />
         </TouchableOpacity>
       </View>
-
-      // src/screens/main/ProfileScreen.tsx (continued)
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Support</Text>
-        
+
         <TouchableOpacity style={styles.menuItem} activeOpacity={0.7}>
-          <Ionicons name="help-circle-outline" size={24} color={COLORS.primary} />
+          <Ionicons
+            name="help-circle-outline"
+            size={24}
+            color={COLORS.primary}
+          />
           <Text style={styles.menuItemText}>Help Center</Text>
           <Ionicons name="chevron-forward" size={20} color={COLORS.grey} />
         </TouchableOpacity>
-        
+
         <TouchableOpacity style={styles.menuItem} activeOpacity={0.7}>
-          <Ionicons name="document-text-outline" size={24} color={COLORS.primary} />
+          <Ionicons
+            name="document-text-outline"
+            size={24}
+            color={COLORS.primary}
+          />
           <Text style={styles.menuItemText}>Terms & Privacy Policy</Text>
           <Ionicons name="chevron-forward" size={20} color={COLORS.grey} />
         </TouchableOpacity>
@@ -107,7 +117,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: COLORS.white,
     padding: 20,
-    alignItems: 'center',
+    alignItems: "center",
     borderBottomWidth: 1,
     borderBottomColor: COLORS.lightGrey,
   },
@@ -119,17 +129,17 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 40,
     backgroundColor: COLORS.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   avatarText: {
     fontSize: 32,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: COLORS.white,
   },
   username: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: COLORS.text,
   },
   email: {
@@ -148,14 +158,14 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: COLORS.grey,
     marginVertical: 8,
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.lightGrey,
@@ -171,15 +181,15 @@ const styles = StyleSheet.create({
     margin: 20,
     padding: 15,
     borderRadius: 40,
-    alignItems: 'center',
+    alignItems: "center",
   },
   logoutText: {
     color: COLORS.white,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   footer: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 20,
     paddingBottom: 40,
   },
@@ -190,14 +200,14 @@ const styles = StyleSheet.create({
     width: 150,
     height: 50,
     backgroundColor: COLORS.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 5,
   },
   logoText: {
     color: COLORS.white,
     fontSize: 18,
-    fontWeight: 'bold',   
+    fontWeight: "bold",
   },
   versionText: {
     fontSize: 12,

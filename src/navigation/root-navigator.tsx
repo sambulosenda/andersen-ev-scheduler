@@ -1,6 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Image } from "react-native";
+import andersenLogo from "../assets/andersen-logo.png";
 
 import { useAuthStore } from "../store/auth-store";
 import LoginScreen from "../screens/auth/login-screen";
@@ -12,7 +13,7 @@ const Stack = createStackNavigator();
 
 const LogoTitle = () => (
   <Image
-    source={require("../assets/andersen-logo.png")}
+    source={andersenLogo}
     style={{ width: 100, height: 24, resizeMode: "contain" }}
   />
 );

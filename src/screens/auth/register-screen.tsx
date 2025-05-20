@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import {
   View,
   Text,
@@ -9,20 +9,12 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-} from 'react-native';
-import { StackScreenProps } from '@react-navigation/stack';
-import { useForm, Controller } from 'react-hook-form';
+} from "react-native";
+import { useForm, Controller } from "react-hook-form";
 
-import { useAuthStore } from '../../store/auth-store';
-import { COLORS } from '../../constants/colors';
-
-type RootStackParamList = {
-  Login: undefined;
-  Register: undefined;
-  Main: undefined;
-};
-
-type Props = StackScreenProps<RootStackParamList, 'Register'>;
+import { useAuthStore } from "../../store/auth-store";
+import { COLORS } from "../../constants/colors";
+import { AuthScreenProps } from "../../types/navigation";
 
 type FormData = {
   username: string;
@@ -31,20 +23,25 @@ type FormData = {
   confirmPassword: string;
 };
 
-const RegisterScreen: React.FC<Props> = ({ navigation }) => {
+const RegisterScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
   const { register, loading, error, clearError } = useAuthStore();
-  
-  const { control, handleSubmit, formState: { errors }, watch } = useForm<FormData>({
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<FormData>({
     defaultValues: {
-      username: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-    }
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
   });
 
   // Used to validate confirmPassword against password
-  const password = watch('password');
+  const password = watch("password");
 
   // Clear errors when component mounts or unmounts
   useEffect(() => {
@@ -59,23 +56,25 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.formContainer}>
           <Text style={styles.title}>Create an Account</Text>
-          
+
           {error && <Text style={styles.errorText}>{error}</Text>}
-          
+
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Username <Text style={styles.required}>*</Text></Text>
+            <Text style={styles.label}>
+              Username <Text style={styles.required}>*</Text>
+            </Text>
             <Controller
               control={control}
               rules={{
-                required: 'Username is required',
+                required: "Username is required",
                 minLength: {
                   value: 3,
-                  message: 'Username must be at least 3 characters',
+                  message: "Username must be at least 3 characters",
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
@@ -95,7 +94,7 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
               <Text style={styles.errorMessage}>{errors.username.message}</Text>
             )}
           </View>
-          
+
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Email</Text>
             <Controller
@@ -103,7 +102,7 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
               rules={{
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Invalid email address',
+                  message: "Invalid email address",
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
@@ -124,16 +123,18 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
               <Text style={styles.errorMessage}>{errors.email.message}</Text>
             )}
           </View>
-          
+
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Password <Text style={styles.required}>*</Text></Text>
+            <Text style={styles.label}>
+              Password <Text style={styles.required}>*</Text>
+            </Text>
             <Controller
               control={control}
               rules={{
-                required: 'Password is required',
+                required: "Password is required",
                 minLength: {
                   value: 6,
-                  message: 'Password must be at least 6 characters',
+                  message: "Password must be at least 6 characters",
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
@@ -153,18 +154,24 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
               <Text style={styles.errorMessage}>{errors.password.message}</Text>
             )}
           </View>
-          
+
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Confirm Password <Text style={styles.required}>*</Text></Text>
+            <Text style={styles.label}>
+              Confirm Password <Text style={styles.required}>*</Text>
+            </Text>
             <Controller
               control={control}
               rules={{
-                required: 'Please confirm your password',
-                validate: value => value === password || 'Passwords do not match',
+                required: "Please confirm your password",
+                validate: (value) =>
+                  value === password || "Passwords do not match",
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  style={[styles.input, errors.confirmPassword && styles.inputError]}
+                  style={[
+                    styles.input,
+                    errors.confirmPassword && styles.inputError,
+                  ]}
                   placeholder="Confirm password"
                   value={value}
                   onChangeText={onChange}
@@ -176,10 +183,12 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
               name="confirmPassword"
             />
             {errors.confirmPassword && (
-              <Text style={styles.errorMessage}>{errors.confirmPassword.message}</Text>
+              <Text style={styles.errorMessage}>
+                {errors.confirmPassword.message}
+              </Text>
             )}
           </View>
-          
+
           <TouchableOpacity
             style={styles.button}
             onPress={handleSubmit(onSubmit)}
@@ -193,15 +202,16 @@ const RegisterScreen: React.FC<Props> = ({ navigation }) => {
               <Text style={styles.buttonText}>Register</Text>
             )}
           </TouchableOpacity>
-          
+
           <TouchableOpacity
             style={styles.loginLink}
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation.navigate("Login")}
             accessibilityLabel="Login link"
             accessibilityRole="button"
           >
             <Text style={styles.loginText}>
-              Already have an account? <Text style={styles.loginTextBold}>Login</Text>
+              Already have an account?{" "}
+              <Text style={styles.loginTextBold}>Login</Text>
             </Text>
           </TouchableOpacity>
         </View>
@@ -224,14 +234,14 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.primary,
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 20,
   },
   errorText: {
     color: COLORS.error,
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 10,
   },
   inputContainer: {
@@ -251,7 +261,7 @@ const styles = StyleSheet.create({
     padding: 12,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: 'transparent',
+    borderColor: "transparent",
   },
   inputError: {
     borderColor: COLORS.error,
@@ -265,24 +275,24 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     borderRadius: 4,
     padding: 15,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 10,
   },
   buttonText: {
     color: COLORS.white,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   loginLink: {
     marginTop: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   loginText: {
     color: COLORS.text,
     fontSize: 14,
   },
   loginTextBold: {
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.primary,
   },
 });

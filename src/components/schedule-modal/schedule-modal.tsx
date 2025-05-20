@@ -57,7 +57,6 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({
         // Edit mode - load schedule data
         setFormData({
           ...schedule,
-          user_id: undefined, // Remove user_id as it's handled separately
         });
         setActiveType(schedule.schedule_type);
       } else {
@@ -68,7 +67,7 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({
     }
   }, [visible, schedule]);
 
-  const handleInputChange = (key: keyof Omit<Schedule, 'user_id'>, value: any) => {
+  const handleInputChange = (key: keyof Omit<Schedule, 'user_id'>, value: string | number | Day[]) => {
     setFormData(prev => ({ ...prev, [key]: value }));
   };
 
@@ -134,7 +133,8 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({
     try {
       await onSave(formData);
       onClose();
-    } catch (error) {
+    } catch (err) {
+      console.error('Failed to save schedule:', err);
       Alert.alert('Error', 'Failed to save schedule');
     }
   };

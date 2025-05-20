@@ -72,8 +72,9 @@ const SchedulesScreen = () => {
           onPress: async () => {
             try {
               await removeSchedule(id);
-            } catch (error) {
+            } catch (err) {
               Alert.alert("Error", "Failed to delete schedule");
+              console.error("Delete schedule error:", err);
             }
           },
         },

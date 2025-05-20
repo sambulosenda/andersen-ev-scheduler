@@ -10,26 +10,18 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
-import { StackScreenProps } from "@react-navigation/stack";
 import { useForm, Controller } from "react-hook-form";
 
 import { useAuthStore } from "../../store/auth-store";
 import { COLORS } from "../../constants/colors";
-
-type RootStackParamList = {
-  Login: undefined;
-  Register: undefined;
-  Main: undefined;
-};
-
-type Props = StackScreenProps<RootStackParamList, "Login">;
+import { AuthScreenProps } from '../../types/navigation';
 
 type FormData = {
   username: string;
   password: string;
 };
 
-const LoginScreen: React.FC<Props> = ({ navigation }) => {
+const LoginScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
   const { login, loading, error, clearError } = useAuthStore();
 
   const {
@@ -134,7 +126,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
             accessibilityRole="button"
           >
             <Text style={styles.registerText}>
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Text style={styles.registerTextBold}>Register</Text>
             </Text>
           </TouchableOpacity>
