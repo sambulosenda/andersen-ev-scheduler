@@ -1,10 +1,10 @@
-import React, { memo } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React, { memo } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-import { Schedule, ScheduleType, Day } from '../../types';
-import { COLORS } from '../../constants/colors';
-import { styles } from './schedule-item.styles';
+import { Schedule, ScheduleType, Day } from "../../types";
+import { COLORS } from '@constants/colors';
+import { styles } from "./schedule-item.styles";
 
 interface ScheduleItemProps {
   schedule: Schedule;
@@ -12,54 +12,60 @@ interface ScheduleItemProps {
   onDelete: () => void;
 }
 
-const ScheduleItem: React.FC<ScheduleItemProps> = ({ schedule, onEdit, onDelete }) => {
+const ScheduleItem: React.FC<ScheduleItemProps> = ({
+  schedule,
+  onEdit,
+  onDelete,
+}) => {
   const getScheduleTypeIcon = (type: ScheduleType): string => {
     switch (type) {
-      case 'time':
-        return 'time-outline';
-      case 'charge':
-        return 'battery-charging-outline';
-      case 'mileage':
-        return 'speedometer-outline';
+      case "time":
+        return "time-outline";
+      case "charge":
+        return "battery-charging-outline";
+      case "mileage":
+        return "speedometer-outline";
       default:
-        return 'calendar-outline';
+        return "calendar-outline";
     }
   };
 
   const formatDays = (days: Day[]): string => {
-    if (days.length === 7) return 'Every day';
-    
+    if (days.length === 7) return "Every day";
+
     const dayMap: Record<Day, string> = {
-      mon: 'Mon',
-      tue: 'Tue',
-      wed: 'Wed',
-      thu: 'Thu',
-      fri: 'Fri',
-      sat: 'Sat',
-      sun: 'Sun',
+      mon: "Mon",
+      tue: "Tue",
+      wed: "Wed",
+      thu: "Thu",
+      fri: "Fri",
+      sat: "Sat",
+      sun: "Sun",
     };
-    
-    return days.map(day => dayMap[day]).join(', ');
+
+    return days.map((day) => dayMap[day]).join(", ");
   };
 
   const renderScheduleDetails = () => {
     switch (schedule.schedule_type) {
-      case 'time':
+      case "time":
         return (
           <Text style={styles.detailText}>
             {schedule.start_time} - {schedule.end_time}
           </Text>
         );
-      case 'charge':
+      case "charge":
         return (
           <Text style={styles.detailText}>
-            Ready by {schedule.ready_by_time} • {schedule.desired_charge_level}% charge
+            Ready by {schedule.ready_by_time} • {schedule.desired_charge_level}%
+            charge
           </Text>
         );
-      case 'mileage':
+      case "mileage":
         return (
           <Text style={styles.detailText}>
-            Ready by {schedule.ready_by_time_mileage} • {schedule.desired_mileage} miles
+            Ready by {schedule.ready_by_time_mileage} •{" "}
+            {schedule.desired_mileage} miles
           </Text>
         );
       default:
@@ -76,13 +82,13 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({ schedule, onEdit, onDelete 
           color={COLORS.primary}
         />
       </View>
-      
+
       <View style={styles.contentContainer}>
         <Text style={styles.name}>{schedule.name}</Text>
         {renderScheduleDetails()}
         <Text style={styles.daysText}>{formatDays(schedule.days)}</Text>
       </View>
-      
+
       <View style={styles.actionsContainer}>
         <TouchableOpacity
           onPress={onEdit}
@@ -92,7 +98,7 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({ schedule, onEdit, onDelete 
         >
           <Ionicons name="create-outline" size={20} color={COLORS.secondary} />
         </TouchableOpacity>
-        
+
         <TouchableOpacity
           onPress={onDelete}
           style={styles.actionButton}
@@ -106,5 +112,5 @@ const ScheduleItem: React.FC<ScheduleItemProps> = ({ schedule, onEdit, onDelete 
   );
 };
 
-// Use memo to prevent unnecessary re-renders
+// prevent unnecessary re-renders
 export default memo(ScheduleItem);

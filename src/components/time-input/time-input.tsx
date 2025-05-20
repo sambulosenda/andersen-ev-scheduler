@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+
 import { COLORS } from '../../constants/colors';
 import { styles } from './time-input.styles';
 
@@ -14,22 +15,14 @@ interface TimeInputProps {
   value: string;
   onChange: (value: string) => void;
   accessibilityLabel?: string;
-  showPickerOnMount?: boolean;
 }
 
 export const TimeInput: React.FC<TimeInputProps> = ({
   value,
   onChange,
   accessibilityLabel,
-  showPickerOnMount = false,
 }) => {
-  const [showPicker, setShowPicker] = useState(showPickerOnMount);
-
-  useEffect(() => {
-    if (showPickerOnMount) {
-      setShowPicker(true);
-    }
-  }, [showPickerOnMount]);
+  const [showPicker, setShowPicker] = useState(false);
 
   // Parse the time string to Date object
   const getTimeAsDate = (): Date => {
@@ -50,9 +43,7 @@ export const TimeInput: React.FC<TimeInputProps> = ({
   };
 
   const handleTimeChange = (event: any, selectedDate?: Date) => {
-    // Always hide the picker after selection
-    setShowPicker(false);
-    
+    setShowPicker(Platform.OS === 'ios');
     if (selectedDate) {
       onChange(formatTime(selectedDate));
     }
@@ -68,16 +59,17 @@ export const TimeInput: React.FC<TimeInputProps> = ({
         <Text style={styles.timeText}>{value}</Text>
         <Ionicons name="time-outline" size={20} color={COLORS.grey} />
       </TouchableOpacity>
-      
+
       {showPicker && (
         <DateTimePicker
           value={getTimeAsDate()}
           mode="time"
           is24Hour={true}
-          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+          display="default"
           onChange={handleTimeChange}
         />
       )}
     </View>
   );
 };
+

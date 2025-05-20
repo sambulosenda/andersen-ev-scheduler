@@ -2,10 +2,10 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Image } from "react-native";
 
-import { useAuthStore } from "../store/authStore";
+import { useAuthStore } from "../store/auth-store";
 import LoginScreen from "../screens/auth/login-screen";
 import RegisterScreen from "../screens/auth/register-screen";
-import MainTabs from "./MainTabs";
+import MainTabs from "./main-tabs";
 import { COLORS } from "../constants/colors";
 
 const Stack = createStackNavigator();

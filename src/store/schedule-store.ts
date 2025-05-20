@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { getSchedules, createSchedule, updateSchedule, deleteSchedule } from '../database/database';
 import { Schedule } from '../types';
-import { useAuthStore } from './authStore';
+import { useAuthStore } from './auth-store';
 
 interface ScheduleState {
   schedules: Schedule[];
@@ -40,6 +40,16 @@ export const useScheduleStore = create<ScheduleState>((set, get) => ({
   addSchedule: async (schedule: Schedule): Promise<number> => {
     const user = useAuthStore.getState().user;
     if (!user) throw new Error('User not authenticated');
+    
+    // Check if the user already has 10 schedules
+    const currentSchedules = get().schedules;
+    if (currentSchedules.length >= 10) {
+      set({
+        error: 'Maximum limit of 10 schedules reached',
+        loading: false
+      });
+      throw new Error('Maximum limit of 10 schedules reached');
+    }
     
     set({ loading: true, error: null });
     

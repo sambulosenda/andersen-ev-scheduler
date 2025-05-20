@@ -12,11 +12,11 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { COLORS } from '../../constants/colors';
 import { Schedule, ScheduleType, Day } from '../../types';
-import {TimeInput} from '../time-input/time-input';
 import {DaySelector} from '../day-selector/day-selector';
 import { styles } from './schedule-modal.styles';
+import { COLORS } from '@/constants/colors';
+import { TimeInput } from '../time-input/time-input';
 
 
 

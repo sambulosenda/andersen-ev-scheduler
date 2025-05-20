@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,17 +7,25 @@ import {
   StyleSheet,
   Alert,
   RefreshControl,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-import { useScheduleStore } from '../../store/scheduleStore';
-import { Schedule } from '../../types';
-import ScheduleItem from '../../components/schedule-item/schedule-item';
-import { COLORS } from '../../constants/colors';
-import {ScheduleModal} from '../../components/schedule-modal/schedule-modal';
+import { useScheduleStore } from "../../store/schedule-store";
+import { Schedule } from "../../types";
+import ScheduleItem from "../../components/schedule-item/schedule-item";
+import { COLORS } from "../../constants/colors";
+import { ScheduleModal } from "../../components/schedule-modal/schedule-modal";
 
 const SchedulesScreen = () => {
-  const { schedules, loading, error, loadSchedules, addSchedule, editSchedule, removeSchedule } = useScheduleStore();
+  const {
+    schedules,
+    loading,
+    error,
+    loadSchedules,
+    addSchedule,
+    editSchedule,
+    removeSchedule,
+  } = useScheduleStore();
   const [refreshing, setRefreshing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentSchedule, setCurrentSchedule] = useState<Schedule | null>(null);
@@ -34,6 +42,15 @@ const SchedulesScreen = () => {
   };
 
   const handleAddSchedule = () => {
+    // Check if schedule limit is reached
+    if (schedules.length >= 10) {
+      Alert.alert(
+        "Limit Reached",
+        "You can have a maximum of 10 schedules. Please delete an existing schedule before adding a new one."
+      );
+      return;
+    }
+
     setCurrentSchedule(null);
     setModalVisible(true);
   };
@@ -45,18 +62,18 @@ const SchedulesScreen = () => {
 
   const handleDeleteSchedule = (id: number) => {
     Alert.alert(
-      'Delete Schedule',
-      'Are you sure you want to delete this schedule?',
+      "Delete Schedule",
+      "Are you sure you want to delete this schedule?",
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: "Cancel", style: "cancel" },
         {
-          text: 'Delete',
-          style: 'destructive',
+          text: "Delete",
+          style: "destructive",
           onPress: async () => {
             try {
               await removeSchedule(id);
             } catch (error) {
-              Alert.alert('Error', 'Failed to delete schedule');
+              Alert.alert("Error", "Failed to delete schedule");
             }
           },
         },
@@ -64,7 +81,9 @@ const SchedulesScreen = () => {
     );
   };
 
-  const handleSaveSchedule = async (formData: Omit<Schedule, 'user_id' | 'id'>) => {
+  const handleSaveSchedule = async (
+    formData: Omit<Schedule, "user_id" | "id">
+  ) => {
     try {
       if (currentSchedule?.id) {
         // Edit existing schedule
@@ -74,15 +93,24 @@ const SchedulesScreen = () => {
           id: currentSchedule.id,
         });
       } else {
+        // Check schedule limit again before adding (in case it changed)
+        if (schedules.length >= 10) {
+          Alert.alert("Error", "Maximum limit of 10 schedules reached");
+          return;
+        }
+
         // Add new schedule (user_id will be added in store)
         await addSchedule({
           ...formData,
-          user_id: 0, // Will be replaced in the store
+          user_id: 0,
         });
       }
     } catch (error) {
-      Alert.alert('Error', 'Failed to save schedule');
-      throw error; // Re-throw to be caught in the modal
+      Alert.alert(
+        "Error",
+        error instanceof Error ? error.message : "Failed to save schedule"
+      );
+      throw error;
     }
   };
 
@@ -114,11 +142,23 @@ const SchedulesScreen = () => {
     );
   }
 
+  // Check if schedule limit is reached
+  const isLimitReached = schedules.length >= 10;
+
   return (
     <View style={styles.container}>
+      {/* Schedule Counter */}
+      <View style={styles.countContainer}>
+        <Text
+          style={[styles.countText, isLimitReached && styles.countTextLimit]}
+        >
+          Schedules: {schedules.length} / 10
+        </Text>
+      </View>
+
       <FlatList
         data={schedules}
-        keyExtractor={(item) => item.id?.toString() || ''}
+        keyExtractor={(item) => item.id?.toString() || ""}
         renderItem={({ item }) => (
           <ScheduleItem
             schedule={item}
@@ -135,11 +175,12 @@ const SchedulesScreen = () => {
       />
 
       <TouchableOpacity
-        style={styles.addButton}
+        style={[styles.addButton, isLimitReached && styles.addButtonDisabled]}
         onPress={handleAddSchedule}
-        activeOpacity={0.8}
+        activeOpacity={isLimitReached ? 1 : 0.8}
         accessibilityLabel="Add schedule"
         accessibilityRole="button"
+        accessibilityState={{ disabled: isLimitReached }}
       >
         <Ionicons name="add" size={30} color={COLORS.white} />
       </TouchableOpacity>
@@ -166,27 +207,27 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   emptyContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 40,
     flex: 1,
   },
   emptyText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: COLORS.text,
     marginTop: 16,
   },
   emptySubText: {
     fontSize: 14,
     color: COLORS.grey,
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 8,
   },
   errorContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 20,
   },
   errorText: {
@@ -203,23 +244,41 @@ const styles = StyleSheet.create({
   },
   retryButtonText: {
     color: COLORS.white,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   addButton: {
-    position: 'absolute',
+    position: "absolute",
     right: 20,
     bottom: 20,
     width: 60,
     height: 60,
     borderRadius: 30,
     backgroundColor: COLORS.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     elevation: 5,
     shadowColor: COLORS.black,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 3,
+  },
+  addButtonDisabled: {
+    backgroundColor: COLORS.grey,
+    opacity: 0.7,
+  },
+  countContainer: {
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 0,
+    alignItems: "flex-end",
+  },
+  countText: {
+    fontSize: 14,
+    color: COLORS.text,
+  },
+  countTextLimit: {
+    color: COLORS.error,
+    fontWeight: "bold",
   },
 });
 

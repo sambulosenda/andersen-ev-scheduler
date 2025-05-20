@@ -13,7 +13,7 @@ import {
 import { StackScreenProps } from "@react-navigation/stack";
 import { useForm, Controller } from "react-hook-form";
 
-import { useAuthStore } from "../../store/authStore";
+import { useAuthStore } from "../../store/auth-store";
 import { COLORS } from "../../constants/colors";
 
 type RootStackParamList = {

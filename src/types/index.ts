@@ -1,4 +1,3 @@
-// src/types/index.ts
 export type ScheduleType = 'time' | 'charge' | 'mileage';
 export type Day = 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat' | 'sun';
 

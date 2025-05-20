@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { useAuthStore } from '../../store/authStore';
+import { useAuthStore } from '../../store/auth-store';
 import { COLORS } from '../../constants/colors';
 
 const ProfileScreen = () => {
@@ -167,10 +167,10 @@ const styles = StyleSheet.create({
     marginLeft: 16,
   },
   logoutButton: {
-    backgroundColor: COLORS.error,
+    backgroundColor: COLORS.primaryButton,
     margin: 20,
     padding: 15,
-    borderRadius: 5,
+    borderRadius: 40,
     alignItems: 'center',
   },
   logoutText: {

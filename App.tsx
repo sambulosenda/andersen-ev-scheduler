@@ -5,7 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import RootNavigator from './src/navigation/RootNavigator';
+import RootNavigator from './src/navigation/root-navigator';
 import { initDatabase } from './src/database/database';
 import { COLORS } from './src/constants/colors';
 
