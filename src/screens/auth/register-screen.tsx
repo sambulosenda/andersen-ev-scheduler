@@ -1,20 +1,13 @@
+// screens/RegisterScreen.tsx
 import React, { useEffect } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-} from "react-native";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import { useAuthStore } from "../../store/auth-store";
-import { COLORS } from "../../constants/colors";
 import { AuthScreenProps } from "../../types/navigation";
+import { FormContainer } from "@/components/fom-container/form-container";
+import { FormInput } from "@/components/form-input/form-input";
+import { Button } from "@/components/button/button";
+import { TextLink } from "@/components/text-link/text-link";
 
 type FormData = {
   username: string;
@@ -23,13 +16,12 @@ type FormData = {
   confirmPassword: string;
 };
 
-const RegisterScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
+export const RegisterScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
   const { register, loading, error, clearError } = useAuthStore();
 
   const {
     control,
     handleSubmit,
-    formState: { errors },
     watch,
   } = useForm<FormData>({
     defaultValues: {
@@ -54,247 +46,72 @@ const RegisterScreen: React.FC<AuthScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-    >
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.formContainer}>
-          <Text style={styles.title}>Create an Account</Text>
+    <FormContainer title="Create an Account" error={error}>
+      <FormInput<FormData>
+        name="username"
+        control={control}
+        label="Username"
+        placeholder="Enter username"
+        rules={{
+          required: "Username is required",
+          minLength: {
+            value: 3,
+            message: "Username must be at least 3 characters",
+          },
+        }}
+        isRequired
+      />
 
-          {error && <Text style={styles.errorText}>{error}</Text>}
+      <FormInput<FormData>
+        name="email"
+        control={control}
+        label="Email"
+        placeholder="Enter email"
+        keyboardType="email-address"
+        rules={{
+          pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            message: "Invalid email address",
+          },
+        }}
+      />
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>
-              Username <Text style={styles.required}>*</Text>
-            </Text>
-            <Controller
-              control={control}
-              rules={{
-                required: "Username is required",
-                minLength: {
-                  value: 3,
-                  message: "Username must be at least 3 characters",
-                },
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  style={[styles.input, errors.username && styles.inputError]}
-                  placeholder="Enter username"
-                  value={value}
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  autoCapitalize="none"
-                  accessibilityLabel="Username input"
-                />
-              )}
-              name="username"
-            />
-            {errors.username && (
-              <Text style={styles.errorMessage}>{errors.username.message}</Text>
-            )}
-          </View>
+      <FormInput<FormData>
+        name="password"
+        control={control}
+        label="Password"
+        placeholder="Enter password"
+        secureTextEntry
+        rules={{
+          required: "Password is required",
+          minLength: {
+            value: 6,
+            message: "Password must be at least 6 characters",
+          },
+        }}
+        isRequired
+      />
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Email</Text>
-            <Controller
-              control={control}
-              rules={{
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Invalid email address",
-                },
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  style={[styles.input, errors.email && styles.inputError]}
-                  placeholder="Enter email"
-                  value={value}
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  accessibilityLabel="Email input"
-                />
-              )}
-              name="email"
-            />
-            {errors.email && (
-              <Text style={styles.errorMessage}>{errors.email.message}</Text>
-            )}
-          </View>
+      <FormInput<FormData>
+        name="confirmPassword"
+        control={control}
+        label="Confirm Password"
+        placeholder="Confirm password"
+        secureTextEntry
+        rules={{
+          required: "Please confirm your password",
+          validate: (value) => value === password || "Passwords do not match",
+        }}
+        isRequired
+      />
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>
-              Password <Text style={styles.required}>*</Text>
-            </Text>
-            <Controller
-              control={control}
-              rules={{
-                required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
-                },
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  style={[styles.input, errors.password && styles.inputError]}
-                  placeholder="Enter password"
-                  value={value}
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  secureTextEntry
-                  accessibilityLabel="Password input"
-                />
-              )}
-              name="password"
-            />
-            {errors.password && (
-              <Text style={styles.errorMessage}>{errors.password.message}</Text>
-            )}
-          </View>
+      <Button title="Register" onPress={handleSubmit(onSubmit)} loading={loading} />
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>
-              Confirm Password <Text style={styles.required}>*</Text>
-            </Text>
-            <Controller
-              control={control}
-              rules={{
-                required: "Please confirm your password",
-                validate: (value) =>
-                  value === password || "Passwords do not match",
-              }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                  style={[
-                    styles.input,
-                    errors.confirmPassword && styles.inputError,
-                  ]}
-                  placeholder="Confirm password"
-                  value={value}
-                  onChangeText={onChange}
-                  onBlur={onBlur}
-                  secureTextEntry
-                  accessibilityLabel="Confirm password input"
-                />
-              )}
-              name="confirmPassword"
-            />
-            {errors.confirmPassword && (
-              <Text style={styles.errorMessage}>
-                {errors.confirmPassword.message}
-              </Text>
-            )}
-          </View>
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleSubmit(onSubmit)}
-            disabled={loading}
-            accessibilityLabel="Register button"
-            accessibilityRole="button"
-          >
-            {loading ? (
-              <ActivityIndicator color={COLORS.white} />
-            ) : (
-              <Text style={styles.buttonText}>Register</Text>
-            )}
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.loginLink}
-            onPress={() => navigation.navigate("Login")}
-            accessibilityLabel="Login link"
-            accessibilityRole="button"
-          >
-            <Text style={styles.loginText}>
-              Already have an account?{" "}
-              <Text style={styles.loginTextBold}>Login</Text>
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+      <TextLink
+        text="Already have an account?"
+        boldText="Login"
+        onPress={() => navigation.navigate("Login")}
+      />
+    </FormContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    backgroundColor: COLORS.background,
-    padding: 20,
-  },
-  formContainer: {
-    backgroundColor: COLORS.white,
-    borderRadius: 8,
-    padding: 20,
-    marginTop: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: COLORS.primary,
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  errorText: {
-    color: COLORS.error,
-    textAlign: "center",
-    marginBottom: 10,
-  },
-  inputContainer: {
-    marginBottom: 15,
-  },
-  label: {
-    fontSize: 14,
-    color: COLORS.text,
-    marginBottom: 5,
-  },
-  required: {
-    color: COLORS.error,
-  },
-  input: {
-    backgroundColor: COLORS.lightGrey,
-    borderRadius: 4,
-    padding: 12,
-    fontSize: 16,
-    borderWidth: 1,
-    borderColor: "transparent",
-  },
-  inputError: {
-    borderColor: COLORS.error,
-  },
-  errorMessage: {
-    color: COLORS.error,
-    fontSize: 12,
-    marginTop: 4,
-  },
-  button: {
-    backgroundColor: COLORS.primary,
-    borderRadius: 4,
-    padding: 15,
-    alignItems: "center",
-    marginTop: 10,
-  },
-  buttonText: {
-    color: COLORS.white,
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  loginLink: {
-    marginTop: 20,
-    alignItems: "center",
-  },
-  loginText: {
-    color: COLORS.text,
-    fontSize: 14,
-  },
-  loginTextBold: {
-    fontWeight: "600",
-    color: COLORS.primary,
-  },
-});
-
-export default RegisterScreen;
