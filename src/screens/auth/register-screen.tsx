@@ -1,4 +1,3 @@
-// screens/RegisterScreen.tsx
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
